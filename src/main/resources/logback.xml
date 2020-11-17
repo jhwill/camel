@@ -1,0 +1,80 @@
+<configuration>
+    <property name="OUTPUT_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] [%-15.15t] [%-50.50c{50}:%5.5L] [%m]%n" />
+    <!--为了防止进程退出时，内存中的数据丢失，请加上此选项-->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+<!--    <appender name="loghubAppender1" class="com.aliyun.openservices.log.logback.LoghubAppender">-->
+<!--        &lt;!&ndash;必选项测试环境&ndash;&gt;-->
+<!--        &lt;!&ndash; 账号及网络配置 &ndash;&gt;-->
+<!--&lt;!&ndash;        <endpoint>cn-beijing-intranet.log.aliyuncs.com</endpoint>&ndash;&gt;-->
+<!--&lt;!&ndash;        <accessKeyId>LTAIitbrY57LzLtj</accessKeyId>&ndash;&gt;-->
+<!--&lt;!&ndash;        <accessKey>eCZHM5X1ublk02fvphTwq0mCpVvUao</accessKey>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        &lt;!&ndash; sls 项目配置 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <projectName>cloudokids</projectName>&ndash;&gt;-->
+<!--&lt;!&ndash;        <logstore>backsystem</logstore>&ndash;&gt;-->
+<!--        &lt;!&ndash;必选项 (end)&ndash;&gt;-->
+
+<!--        &lt;!&ndash;必选项生产环境&ndash;&gt;-->
+<!--        &lt;!&ndash; 账号及网络配置 &ndash;&gt;-->
+<!--&lt;!&ndash;        <endpoint>cn-hangzhou-intranet.log.aliyuncs.com</endpoint>&ndash;&gt;-->
+<!--&lt;!&ndash;        <accessKeyId>LTAIBJFTbzfqDXb8</accessKeyId>&ndash;&gt;-->
+<!--&lt;!&ndash;        <accessKey>cr9s4kFMBR8SL9K8gUAdJN2QVKoIdM</accessKey>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        &lt;!&ndash; sls 项目配置 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <projectName>cloudokids-online</projectName>&ndash;&gt;-->
+<!--&lt;!&ndash;        <logstore>backsystem</logstore>&ndash;&gt;-->
+<!--        &lt;!&ndash;必选项 (end)&ndash;&gt;-->
+
+
+<!--        &lt;!&ndash; 可选项 &ndash;&gt;-->
+<!--        <topic></topic>-->
+<!--        <source></source>-->
+
+<!--        &lt;!&ndash; 可选项 详见 '参数说明'&ndash;&gt;-->
+<!--        <packageTimeoutInMS>3000</packageTimeoutInMS>-->
+<!--        <logsCountPerPackage>4096</logsCountPerPackage>-->
+<!--        <logsBytesPerPackage>3145728</logsBytesPerPackage>-->
+<!--        <memPoolSizeInByte>104857600</memPoolSizeInByte>-->
+<!--        <retryTimes>3</retryTimes>-->
+<!--        <maxIOThreadSizeInPool>8</maxIOThreadSizeInPool>-->
+
+<!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">&lt;!&ndash; 打印WARN,ERROR级别的日志 &ndash;&gt;-->
+<!--            <level>INFO</level>-->
+<!--        </filter>-->
+<!--    </appender>-->
+
+
+    <!-- Every day appender -->
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/data/application/logs/express/express.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <FileNamePattern>/data/application/logs/BackSystem/BackSystem.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <!--<maxHistory>30</maxHistory>-->
+        </rollingPolicy>
+        <encoder>
+            <pattern>${OUTPUT_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder
+            by default -->
+        <encoder>
+            <pattern>${OUTPUT_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 可用来获取StatusManager中的状态 -->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
